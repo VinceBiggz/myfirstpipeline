@@ -2,6 +2,12 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+# Use a package of configuration called an orb.
+orbs:
+  
+# Declare a dependency on the welcome-orb
+welcome: circleci/welcome-orb@0.4.1
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -17,6 +23,21 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
+  print-hello:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run:
+          name: "Print Hello"
+          command: "echo Hello..."
+  print-world:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run:
+          name: "Print World"
+          command: "echo World...!!"
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -24,3 +45,7 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello
+      - print-hello
+      - print-world:
+          requires:
+            - print-hello
