@@ -21,9 +21,13 @@ jobs:
           command: "echo World...!!"
   print-name:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/base:2020.01
     steps:
-      - run: "echo MY_NAME"
+      - checkout
+      - run: 
+            name: "Echo an Environment Value that is part of my project"
+            command: |
+              echo $MY_NAME
 
 
 # Invoke jobs via workflows
