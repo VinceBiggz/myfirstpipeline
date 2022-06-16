@@ -11,23 +11,34 @@ jobs:
     steps:
       - run:
           name: "Print Hello"
-          command: "echo Hello..."
+          command: echo "Hello Vince...!!"
   print-world:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - run:
           name: "Print World"
-          command: "echo World...!!"
+          command: echo " Hello World...!!" > ~/output.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - output.txt
   print-name:
     docker:
       - image: cimg/base:2020.01
     steps:
       - checkout
       - run:
-          name: "Echo an Environment Value that is part of my project"
+          name: "Echo an Environment Value that is part of my project" 
           command: |
             echo $MY_NAME
+  print-output:
+     docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/output.txt
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -39,3 +50,6 @@ workflows:
           requires:
             - print-hello
       - print-name
+      - print-output:
+          requires:
+            - print-world
