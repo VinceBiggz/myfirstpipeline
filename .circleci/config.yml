@@ -16,7 +16,7 @@ jobs:
     steps:
       - run:
           name: "A command that returns 1"
-          command: return 1
+          command: exit 1
       - run: 
           name: "What happens during a fail"
           command: echo "The command failed"
