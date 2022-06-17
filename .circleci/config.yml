@@ -10,6 +10,17 @@ commands:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  on-fail:
+    docker: 
+      - image: circleci/node:13.8.0
+    steps:
+      - run:
+          name: "A command that returns 1"
+          command: return 1
+      - run: 
+          name: "What happens during a fail"
+          command: echo "The command failed"
+          when: on_fail
   print-hello:
     docker:
       - image: circleci/node:13.8.0
@@ -64,3 +75,4 @@ workflows:
           requires:
             - print-world
       - my_job
+      - on-fail
